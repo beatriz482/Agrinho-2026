@@ -1,0 +1,125 @@
+:root {
+    --verde-agro: #2e7d32;
+    --verde-claro: #e8f5e9;
+    --terra: #8d6e63;
+    --texto: #333;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f4;
+    color: var(--texto);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: var(--verde-agro);
+    margin-bottom: 5px;
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    max-width: 600px;
+    width: 100%;
+}
+
+.status-bar {
+    margin-bottom: 15px;
+}
+
+.status-label {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+progress {
+    width: 100%;
+    height: 20px;
+    accent-color: var(--verde-agro);
+}
+
+.painel-dados {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    background: var(--verde-claro);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.dado-card {
+    font-size: 1.1rem;
+}
+
+.dado-numero {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--verde-agro);
+}
+
+.controles {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+button {
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-soltar {
+    background-color: #f57c00;
+    color: white;
+}
+
+.btn-soltar:hover {
+    background-color: #e65100;
+}
+
+.btn-avancar {
+    background-color: var(--verde-agro);
+    color: white;
+}
+
+.btn-avancar:hover {
+    background-color: #1b5e20;
+}
+
+.btn-reiniciar {
+    background-color: #cfd8dc;
+    color: #37474f;
+}
+
+#mensagem {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+    display: none;
+}
+
+.sucesso { background-color: #c8e6c9; color: #2e7d32; }
+.perigo { background-color: #ffcdd2; color: #c62828; }

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador BioAgro - Agrinho 2026</title>
+    <style>
+        :root {
+            --verde-agro: #2e7d32;
+            --verde-claro: #e8f5e9;
+            --terra: #8d6e63;
+            --texto: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f4;
+            color: var(--texto);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--verde-agro);
+            margin-bottom: 5px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .status-bar {
+            margin-bottom: 15px;
+        }
+
+        .status-label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        progress {
+            width: 100%;
+            height: 20px;
+            accent-color: var(--verde-agro);
+        }
+
+        .painel-dados {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            background: var(--verde-claro);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .dado-card {
+            font-size: 1.1rem;
+        }
+
+        .dado-numero {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--verde-agro);
+        }
+
+        .controles {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-soltar {
+            background-color: #f57c00;
+            color: white;
+        }
+
+        .btn-soltar:hover {
+            background-color: #e65100;
+        }
+
+        .btn-avancar {
+            background-color: var(--verde-agro);
+            color: white;
+        }
+
+        .btn-avancar:hover {
+            background-color: #1b5e20;
+        }
+
+        .btn-reiniciar {
+            background-color: #cfd8dc;
+            color: #37474f;
+        }
+
+        #mensagem {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .sucesso { background-color: #c8e6c9; color: #2e7d32; }
+        .perigo { background-color: #ffcdd2; color: #c62828; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>BioSimulador 2026</h1>
+        <p><em>Agro forte, futuro sustentável: equilíbrio entre produção e meio ambiente</em></p>
+    </header>
+
+    <div class="container">
+        <div class="status-bar">
+            <div class="status-label">
+                <span>🌾 Saúde da Lavoura (Soja)</span>
+                <span id="txt-saude">100%</span>
+            </div>
+            <progress id="barra-saude" value="100" max="100"></progress>
+        </div>
+
+        <div class="painel-dados">
+            <div class="dado-card">
+                <div>🐛 Pulgões (Praga)</div>
+                <div class="dado-numero" id="txt-pragas" style="color: #c62828;">50</div>
+            </div>
+            <div class="dado-card">
+                <div>🐞 Joaninhas (Bio)</div>
+                <div class="dado-numero" id="txt-defensores">0</div>
+            </div>
+        </div>
+
+        <div class="controles">
+            <div style="text-align: center; font-weight: bold; margin-bottom: 5px;">
+                Dia Virtual: <span id="txt-dia">0</span>
+            </div>
+            <button class="btn-soltar" onclick="soltarJoaninhas()">Soltar +10 Joaninhas</button>
+            <button class="btn-avancar" onclick="avancarDia()">Avançar Próximo Dia 🗓️</button>
+            <button class="btn-reiniciar" onclick="reiniciarSimulador()">Reiniciar Simulador</button>
+        </div>
+
+        <div id="mensagem"></div>
+    </div>
+
+    <script>
+        // Variáveis de estado do simulador
+        let saudePlanta = 100;
+        let qtdPragas = 50;
+        let qtdDefensores = 0;
+        let dia = 0;
+        let jogoAtivo = true;
+
+        // Elementos do HTML que o JavaScript vai atualizar
+        const txtSaude = document.getElementById('txt-saude');
+        const barraSaude = document.getElementById('barra-saude');
+        const txtPragas = document.getElementById('txt-pragas');
+        const txtDefensores = document.getElementById('txt-defensores');
+        const txtDia = document.getElementById('txt-dia');
+        const msgDiv = document.getElementById('mensagem');
+
+        function atualizarTela() {
+            txtSaude.innerText = Math.round(saudePlanta) + "%";
+            barraSaude.value = saudePlanta;
+            txtPragas.innerText = Math.round(qtdPragas);
+            txtDefensores.innerText = Math.round(qtdDefensores);
+            txtDia.innerText = dia;
+        }
+
+        function soltarJoaninhas() {
+            if (!jogoAtivo) return;
+            qtdDefensores += 10;
+            atualizarTela();
+        }
+
+        function avancarDia() {
+            if (!jogoAtivo) return;
+
+            dia++;
+
+            // 1. Lógica de Predação: Cada joaninha come até 4 pulgões por dia
+            let pragasComidas = qtdDefensores * 4;
+            qtdPragas -= pragasComidas;
+            if (qtdPragas < 0) qtdPragas = 0;
+
+            // 2. Lógica de Dano: Cada pulgão vivo drena 0.4% da saúde da planta
+            let danoDoDia = qtdPragas * 0.4;
+            saudePlanta -= danoDoDia;
+            if (saudePlanta < 0) saudePlanta = 0;
+
+            // 3. Lógica do Equilíbrio (Sustentabilidade):
+            // Se não há pragas, as joaninhas diminuem por falta de alimento (fome)
+            if (qtdPragas === 0 && qtdDefensores > 0) {
+                qtdDefensores -= qtdDefensores * 0.3; // 30% morrem ou migram por dia
+                if (qtdDefensores < 1) qtdDefensores = 0;
+            } else if (qtdPragas > 0) {
+                // Se tem comida, os pulgões e as joaninhas se reproduzem um pouco
+                qtdPragas += qtdPragas * 0.15; // Praga se multiplica rápido (15%)
+                if (qtdDefensore
