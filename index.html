@@ -217,11 +217,44 @@
             if (saudePlanta < 0) saudePlanta = 0;
 
             // 3. Lógica do Equilíbrio (Sustentabilidade):
-            // Se não há pragas, as joaninhas diminuem por falta de alimento (fome)
             if (qtdPragas === 0 && qtdDefensores > 0) {
                 qtdDefensores -= qtdDefensores * 0.3; // 30% morrem ou migram por dia
                 if (qtdDefensores < 1) qtdDefensores = 0;
             } else if (qtdPragas > 0) {
-                // Se tem comida, os pulgões e as joaninhas se reproduzem um pouco
                 qtdPragas += qtdPragas * 0.15; // Praga se multiplica rápido (15%)
-                if (qtdDefensore
+            }
+
+            atualizarTela();
+            verificarFimDeJogo();
+        }
+
+        function verificarFimDeJogo() {
+            if (qtdPragas === 0 && saudePlanta > 0) {
+                jogoAtivo = false;
+                msgDiv.style.display = "block";
+                msgDiv.className = "sucesso";
+                msgDiv.innerHTML = `🎉 <strong>Vitória Sustentável!</strong><br>Você controlou a praga usando biologia! A lavoura está salva e o meio ambiente agradece.`;
+            } else if (saudePlanta <= 0) {
+                jogoAtivo = false;
+                msgDiv.style.display = "block";
+                msgDiv.className = "perigo";
+                msgDiv.innerHTML = `❌ <strong>Lavoura Perdida!</strong><br>As pragas destruíram a plantação. Tente soltar os defensores biológicos mais cedo na próxima vez!`;
+            }
+        }
+
+        function reiniciarSimulador() {
+            saudePlanta = 100;
+            qtdPragas = 50;
+            qtdDefensores = 0;
+            dia = 0;
+            jogoAtivo = true;
+            msgDiv.style.display = "none";
+            msgDiv.className = "";
+            msgDiv.innerHTML = "";
+            atualizarTela();
+        }
+
+        atualizarTela();
+    </script>
+</body>
+</html>
